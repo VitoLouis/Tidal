@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="main.css">
+    <title>Stroll</title>
+    <style>
+      body {
+        background-color: grey;
+        height: 100vh;
+        margin: 0;
+      }
+      #flex-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      }
+      canvas {
+        border: 1px solid white;
+      }
+      #score {
+        color: white;
+        font-family: 'Courier New', monospace;
+        font-size: 24px;
+        margin-top: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="navbar">
+      <a href="game.html"><button>Home</button></a>
+  </div>
+    <div id="flex-container">
+      <canvas id="gameCanvas" width="600" height="200"></canvas>
+      <div id="score">Score: 0</div>
+    </div>
+    <script>
+       document.addEventListener('keydown', function(e) {
+    if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'ArrowDown' || e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
+      e.preventDefault();
+    }
+  });
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+const player = {
+  x: 50,
+  y: 110,
+  width: 20,
+  height: 20,
+  velocityY: 0,
+  gravity: 0.5,
+  isJumping: false,
+};
+
+const floor = {
+  y: 130,
+  height: 10,
+};
+
+const obstacles = [];
+let score = 0;
+
+let jumpDuration = 0;
+let jumpKeyIsDown = false;
+let distanceSinceLastObstacle = 0;
+
+function updateScore() {
+  const scoreElement = document.getElementById('score');
+  scoreElement.textContent = 'Score: ' + score;
+}
+
+function drawPlayer() {
+  ctx.fillStyle = 'white';
+  ctx.fillRect(player.x, player.y, player.width, player.height);
+}
+
+function drawFloor() {
+  ctx.fillStyle = 'white';
+  ctx.fillRect(0, floor.y, canvas.width, floor.height);
+}
+
+function drawObstacles() {
+  ctx.fillStyle = 'red';
+  for (const obstacle of obstacles) {
+    ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+  }
+}
+
+function updatePlayer() {
+  if (player.isJumping) {
+    player.velocityY += player.gravity;
+    player.y += player.velocityY;
+
+    if (player.y > 110) {
+      player.y = 110;
+      player.velocityY = 0;
+      player.isJumping = false;
+    }
+
+    if (jumpKeyIsDown && jumpDuration < 12) {
+      player.velocityY = -6;
+      jumpDuration++;
+    } else {
+      jumpDuration = 0;
+    }
+    if (player.y < 15) {
+      player.y = 15;
+      player.velocityY = 0;
+    }
+  }
+}
+
+function updateObstacles() {
+  distanceSinceLastObstacle += 5;
+
+  if (Math.random() < 0.1) {
+    const minDistance = 5 * 20; // 5 times the obstacle width
+    const maxDistance = 13 * 20; // 13 times the obstacle width
+
+    if (distanceSinceLastObstacle >= minDistance) {
+      const isTopObstacle = Math.random() < 0.5; // Randomly choose if the obstacle is on top or bottom
+
+      if (isTopObstacle) {
+        // Obstacles on the top
+        obstacles.push({
+          x: canvas.width,
+          y: 0,
+          width: 20,
+          height: 30,
+          passed: false,
+        });
+      } else {
+        // Obstacles on the ground
+        obstacles.push({
+          x: canvas.width,
+          y: 100,
+          width: 20,
+          height: 30,
+          passed: false,
+        });
+      }
+
+      distanceSinceLastObstacle = 0;
+    }
+  } else {
+    distanceSinceLastObstacle += 5;
+  }
+
+  for (const obstacle of obstacles) {
+    obstacle.x -= 5;
+
+    if (obstacle.x + obstacle.width < player.x && !obstacle.passed) {
+      score++;
+      updateScore();
+      obstacle.passed = true;
+    }
+
+    if (
+      player.x < obstacle.x + obstacle.width &&
+      player.x + player.width > obstacle.x &&
+      player.y < obstacle.y + obstacle.height &&
+      player.y + player.height > obstacle.y
+    ) {
+      score = 0;
+      updateScore();
+      obstacles.length = 0;
+    }
+  }
+}
+
+
+function gameLoop() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  drawFloor();
+  drawPlayer();
+  drawObstacles();
+
+  updatePlayer();
+  updateObstacles();
+
+  requestAnimationFrame(gameLoop);
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'Space' || e.code === 'ArrowUp') {
+    e.preventDefault();
+    if (!player.isJumping) {
+      player.isJumping = true;
+      player.velocityY = -6;
+      jumpDuration = 1;
+      jumpKeyIsDown = true;
+    }
+  }
+});
+
+document.addEventListener('keyup', (e) => {
+  if (e.code === 'Space' || e.code === 'ArrowUp') {
+    jumpKeyIsDown = false;
+  }
+});
+
+gameLoop();
+
+</script>
+</body>
+</html>

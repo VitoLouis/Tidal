@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="main.css">
+    <title>Tank</title>
+    <style>
+      body {
+        background-color: grey;
+        height: 100vh;
+        margin: 0;
+      }
+      #flex-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      }
+      canvas {
+        border: 1px solid white;
+      }
+      #score {
+        color: white;
+        font-family: 'Courier New', monospace;
+        font-size: 24px;
+        margin-top: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="navbar">
+      <a href="game.html"><button>Home</button></a>
+  </div>
+    <div id="flex-container">
+      <canvas id="game" width="600" height="600"></canvas>
+      <div id="score">Score: 0</div>
+    </div>
+
+    <script>
+       document.addEventListener('keydown', function(e) {
+    if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'ArrowDown' || e.code === 'ArrowLeft' || e.code === 'ArrowRight') {
+      e.preventDefault();
+    }
+  });
+      var canvas = document.getElementById("game");
+      var ctx = canvas.getContext("2d");
+
+      var x = canvas.width / 2 - 10;
+      var y = canvas.height / 2 - 10;
+      var dx = 0;
+      var dy = 0;
+
+      var direction = "up";
+
+      var projectiles = [];
+      var blocks = [];
+      var enemies = []; // Add a new array for red enemy blocks
+
+      var canFire = true;
+
+      var score = 0;
+
+      generateBlocks();
+      generateEnemies([
+    { x: 0, y: 0 },
+    { x: 0, y: canvas.height - 20 },
+    { x: canvas.width - 20, y: 0 },
+    { x: canvas.width - 20, y: canvas.height - 20 },
+]);
+
+      document.addEventListener("keydown", keyDownHandler, false);
+      document.addEventListener("keyup", keyUpHandler, false);
+
+      function keyDownHandler(e) {
+        if (e.key == "Right" || e.key == "ArrowRight") {
+          dx = 2;
+          dy = 0;
+          direction = "right";
+        } else if (e.key == "Left" || e.key == "ArrowLeft") {
+          dx = -2;
+          dy = 0;
+          direction = "left";
+        } else if (e.key == "Up" || e.key == "ArrowUp") {
+          dy = -2;
+          dx = 0;
+          direction = "up";
+        } else if (e.key == "Down" || e.key == "ArrowDown") {
+          dy = 2;
+          dx = 0;
+          direction = "down";
+        } else if (e.code === 'Space' && canFire) {
+          fireProjectile();
+          canFire = false;
+          setTimeout(function() { canFire = true; }, 200);
+        }
+      }
+
+      function keyUpHandler(e) {
+        if (
+          e.key == "Right" ||
+          e.key == "ArrowRight" ||
+          e.key == "Left" ||
+          e.key == "ArrowLeft"
+        ) {
+          dx = 0;
+        } else if (
+          e.key == "Up" ||
+          e.key == "ArrowUp" ||
+          e.key == "Down" ||
+          e.key == "ArrowDown"
+        ) {
+          dy = 0;
+        }
+      }
+
+      function fireProjectile() {
+        var projectile = {
+          x: x + 10,
+          y: y + 10,
+          dx: 0,
+          dy: 0
+        };
+
+        if (direction === 'up') {
+            projectile.dy = -5; 
+            projectile.y -= 20; 
+        } else if (direction === 'down') {
+            projectile.dy = 5; 
+            projectile.y += 20; 
+        } else if (direction === 'left') {
+            projectile.dx = -5; 
+            projectile.x -= 20; 
+        } else if (direction === 'right') {
+            projectile.dx = 5; 
+            projectile.x += 20; 
+        }
+
+        projectiles.push(projectile);
+      }
+
+      function generateBlocks() {
+        blocks = [];
+
+        for (var i=0; i<10; i++) {
+            blocks.push({
+                x: Math.random() * (canvas.width -20),
+                y: Math.random() * (canvas.height -20)
+            });
+         }
+     }
+
+     function generateEnemies(spawnPoints) {
+    enemies = [];
+
+    function isPositionValid(x, y) {
+  // Check distance from the middle of the canvas
+  if (
+    x > canvas.width / 2 - 75 && x < canvas.width / 2 + 75 &&
+    y > canvas.height / 2 - 75 && y < canvas.height / 2 + 75
+  ) {
+    return false;
+  }
+
+  // Check distance from player's spawn points
+  var spawnPoints = [
+    { x: 0, y: 0 },
+    { x: 0, y: canvas.height - 20 },
+    { x: canvas.width - 20, y: 0 },
+    { x: canvas.width - 20, y: canvas.height - 20 },
+  ];
+
+  for (var i = 0; i < spawnPoints.length; i++) {
+    var spawnPoint = spawnPoints[i];
+    if (Math.abs(x - spawnPoint.x) < 75 && Math.abs(y - spawnPoint.y) < 75) {
+      return false;
+    }
+  }
+
+  // Check distance from the edge of the canvas
+  if (
+    x < 75 || x > canvas.width - 95 ||
+    y < 75 || y > canvas.height - 95
+  ) {
+    return false;
+  }
+
+  return true;
+}
+
+for (var i = 0; i < 10; i++) {
+    var enemy = {
+      x: Math.random() * (canvas.width - 20),
+      y: Math.random() * (canvas.height - 20)
+    };
+
+    while (!isPositionValid(enemy.x, enemy.y)) {
+      enemy.x = Math.random() * (canvas.width - 20);
+      enemy.y = Math.random() * (canvas.height - 20);
+    }
+
+    // Add the direction property to the enemy object
+    enemy.direction = ["up", "down", "left", "right"][Math.floor(Math.random() * 4)];
+
+    enemies.push(enemy);
+  }
+  }
+
+  function moveEnemies() {
+  enemies.forEach(function(enemy) {
+    // Check for collisions with the edge or blocks and change direction
+    var edgeCollision = enemy.x <= 0 || enemy.x >= canvas.width - 20 || enemy.y <= 0 || enemy.y >= canvas.height - 20;
+    var blockCollision = blocks.some(function(block) {
+      return (
+        enemy.x + 20 > block.x &&
+        enemy.x < block.x + 20 &&
+        enemy.y + 20 > block.y &&
+        enemy.y < block.y + 20
+      );
+    });
+
+    if (edgeCollision || blockCollision) {
+      var directions = ["up", "down", "left", "right"];
+      enemy.direction = directions[Math.floor(Math.random() * directions.length)];
+    }
+
+    // Update enemy position based on direction
+    if (enemy.direction === "up") {
+      enemy.y -= 1; // Half the speed of the player
+    } else if (enemy.direction === "down") {
+      enemy.y += 1; // Half the speed of the player
+    } else if (enemy.direction === "left") {
+      enemy.x -= 1; // Half the speed of the player
+    } else if (enemy.direction === "right") {
+      enemy.x += 1; // Half the speed of the player
+    }
+  });
+}
+
+function drawEnemies() {
+    enemies.forEach(function(enemy) {
+        ctx.beginPath();
+        ctx.rect(enemy.x, enemy.y, 20, 20);
+        ctx.fillStyle = "#f00";
+        ctx.fill();
+        ctx.closePath();
+    });
+}
+
+     function drawPlayer() {
+         ctx.beginPath();
+         ctx.rect(x, y, 20, 20);
+         ctx.fillStyle="#fff";
+         ctx.fill();
+         ctx.closePath();
+
+         var pointerX=x+10;
+         var pointerY=y+10;
+
+         if(direction==='up') {pointerY-=15;}
+         else if(direction==='down') {pointerY+=15;}
+         else if(direction==='left') {pointerX-=15;}
+         else if(direction==='right') {pointerX+=15;}
+
+         ctx.beginPath();
+         ctx.rect(pointerX-5,pointerY-5,10,10);
+         ctx.fillStyle="#fff";
+         ctx.fill();
+ctx.closePath();
+
+x += dx;
+y += dy;
+
+blocks.forEach(function(block) {
+  if (
+    x + 20 > block.x &&
+    x < block.x + 20 &&
+    y + 20 > block.y &&
+    y < block.y + 20
+  ) {
+    if (dx > 0) {
+      x = block.x - 20;
+    } else if (dx < 0) {
+      x = block.x + 20;
+    } else if (dy > 0) {
+      y = block.y - 20;
+    } else if (dy < 0) {
+      y = block.y + 20;
+    }
+  }
+});
+
+enemies.forEach(function(enemy) {
+        if (
+            x + 20 > enemy.x &&
+            x < enemy.x + 20 &&
+            y + 20 > enemy.y &&
+            y < enemy.y + 20
+        ) {
+            x = canvas.width / 2 - 10;
+            y = canvas.height / 2 - 10;
+            score = 0;
+            document.getElementById("score").innerHTML = "Score: 0";
+            reset();
+        }
+    });
+
+if (x > canvas.width - 20) {
+  x = 0;
+  reset();
+} else if (x < 0) {
+  x = canvas.width - 20;
+  reset();
+}
+
+if (y > canvas.height - 20) {
+  y = 0;
+  reset();
+} else if (y < 0) {
+  y = canvas.height - 20;
+  reset();
+}
+}
+
+function reset() {
+    projectiles = [];
+    generateBlocks();
+    
+    // Update player's spawn points
+    var spawnPoints = [
+        { x: 0, y: 0 },
+        { x: 0, y: canvas.height - 20 },
+        { x: canvas.width - 20, y: 0 },
+        { x: canvas.width - 20, y: canvas.height - 20 },
+    ];
+
+    // Find the closest spawn point to the player's new position
+    var closestSpawnPoint = spawnPoints.reduce(function(prev, curr) {
+        return (
+            Math.abs(x - curr.x) + Math.abs(y - curr.y) <
+            Math.abs(x - prev.x) + Math.abs(y - prev.y)
+        ) ? curr : prev;
+    });
+
+    // Remove the closest spawn point from the spawnPoints array
+    spawnPoints = spawnPoints.filter(function(spawnPoint) {
+        return spawnPoint !== closestSpawnPoint;
+    });
+
+    // Pass the updated spawn points to the generateEnemies function
+    generateEnemies(spawnPoints);
+}
+
+function drawBlocks() {
+blocks.forEach(function(block) {
+  ctx.beginPath();
+  ctx.rect(block.x, block.y, 20, 20);
+  ctx.fillStyle = "#fff";
+  ctx.fill();
+  ctx.closePath();
+});
+}
+
+function drawProjectiles() {
+  projectiles.forEach(function (projectile, index) {
+    ctx.beginPath();
+    ctx.arc(projectile.x, projectile.y, 5, 0, Math.PI * 2);
+    ctx.fillStyle = "#f00";
+    ctx.fill();
+    ctx.closePath();
+
+    projectile.x += projectile.dx;
+    projectile.y += projectile.dy;
+
+    if (
+      projectile.x > canvas.width ||
+      projectile.x < 0 ||
+      projectile.y > canvas.height ||
+      projectile.y < 0
+    ) {
+      projectiles.splice(index, 1);
+    }
+
+    blocks.forEach(function (block, blockIndex) {
+      if (
+        projectile.x > block.x &&
+        projectile.x < block.x + 20 &&
+        projectile.y > block.y &&
+        projectile.y < block.y + 20
+      ) {
+        blocks.splice(blockIndex, 1);
+        score++;
+        document.getElementById("score").innerHTML = "Score: " + score;
+        projectiles.splice(index, 1);
+      }
+    });
+
+    // Check for collisions between projectiles and enemies
+    enemies.forEach(function (enemy, enemyIndex) {
+      if (
+        projectile.x > enemy.x &&
+        projectile.x < enemy.x + 20 &&
+        projectile.y > enemy.y &&
+        projectile.y < enemy.y + 20
+      ) {
+        enemies.splice(enemyIndex, 1);
+        score += 2; // Increase the score when an enemy is destroyed
+        document.getElementById("score").innerHTML = "Score: " + score;
+        projectiles.splice(index, 1);
+      }
+    });
+  });
+}
+
+
+function draw() {
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+drawPlayer();
+drawProjectiles();
+drawBlocks();
+drawEnemies(); // Call the drawEnemies function to draw the red enemy blocks
+moveEnemies(); // Call the moveEnemies function to update enemy positions
+}
+
+setInterval(draw,10);
+     </script>
+   </body>
+</html>
