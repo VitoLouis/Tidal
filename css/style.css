@@ -1,7 +1,7 @@
 /* Start Global Variables */
 :root {
-    --main-color: #2196f3;
-    --main-color-alt: #1787e0;
+    --main-color: #6332DD;
+    --main-color-alt: #6332DD;
     --section-background: #111111;
     --main-bd-color: #fafafa;
     --main-bd-color-2: #d5d5d5;
@@ -10,7 +10,7 @@
     --main-transition: 0.3s;
     --features-box-color-1: #f44036;
     --features-box-color-2: #009688 ;
-    --features-box-color-3: #03a9f4;
+    --features-box-color-3: #6332DD;
     
 }
 /* End Global Variables */
