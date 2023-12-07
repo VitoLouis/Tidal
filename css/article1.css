@@ -4,7 +4,7 @@
     top: 0;
     right: 0;
     bottom: 0;
-    background-image:url(../imgs/Ai\ Art\ generator.jpg);
+    background-image:url(../imgs/Ai\ art\ generator.png);
     width: 100vw;
     height: 100vh;
     background-repeat: no-repeat;
@@ -15,13 +15,15 @@
   }
 
 #image_holder h1 {
-    margin-top: 50%;
+    margin-top: 40%;
+    font-family: 'Montserrat', sans-serif;
 }
+
 .container_custom {
 width: 100%;
 padding:0 1rem;
 margin: 0 auto;
-
+font-family: 'Montserrat', sans-serif;
 }
 
   .hero__scroll-btn {
@@ -30,7 +32,7 @@ margin: 0 auto;
     bottom: 30px;
     transform: translateX(-50%);
     z-index: 1;
-    color: var(--bs-black);
+    color: var(--bs-white);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -78,5 +80,34 @@ margin: 0 auto;
     width: 80vw;
     padding-top: 150px;
     padding-bottom: 150px;
+    font-family: 'Montserrat', sans-serif;
 
+}
+
+.image2 {
+  width: 100%;
+  height: 80%;
+  top: 0%;
+  left: 0%;
+  transition: 1.1s all;
+  cursor: pointer;
+}
+
+.image2:hover {
+  box-shadow: 6px 6px 40px 10px black;
+  transform: translateX(20px);
+}
+
+.image1 {
+  width: 500px;
+  height: 370px;
+
+  transition: 1.1s all;
+  cursor: pointer;
+  
+}
+
+.image1:hover{
+  box-shadow: 6px 6px 40px 10px black;
+  transform: translateX(20px);
 }
