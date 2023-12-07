@@ -2,7 +2,7 @@
 :root {
     --main-color: #2196f3;
     --main-color-alt: #1787e0;
-    --section-background: #ececec;
+    --section-background: #111111;
     --main-bd-color: #fafafa;
     --main-bd-color-2: #d5d5d5;
     --main-padding-top: 100px;
@@ -189,11 +189,8 @@ a {
 /* End Shared Components */
 /* Start header */
 header  {
-    background-color: white;
     position: relative;
-    -webkit-box-shadow: 0 0 10px #ddd;
-    box-shadow: 0 0 74px gray; 
-    z-index: 1;
+    z-index: 3;
     height: 72px;
 }
 header .container {
@@ -221,6 +218,7 @@ header .container a.logo {
     display: flex;   
     justify-content: center;
     align-items: center;
+    font-family: "Quicksand", sans-serif;
 }
 @media (min-width: 993px) {
     header .container a.logo {
@@ -244,11 +242,14 @@ header .container .logo img {
 header nav ul {
     display: flex;
     justify-content: space-between;
+    
+    
 }
 header nav ul > li > a {
     color: black;
     display: flex;
     align-items: center;
+    font-family: "Quicksand", sans-serif;
     height: 72px;
     padding: 0 30px;
     position: relative;
@@ -293,23 +294,7 @@ header nav ul > li > a.nav-a:hover::before {
 header nav ul > li > a.nav-a:hover {
     color: var(--main-color-alt);
 }
-.megamenu {
-    background-color: white;
-    position: absolute;
-    top: calc(100% + 40px);
-    opacity: 0;
-    z-index: -1;
-    visibility: hidden;
-    left: 10px;
-    width: 99%;
-    height: 375px;
-    display: flex;
-    align-items: center;
-    padding: 25px;
-    border-bottom: 3px solid var(--main-color);
-    gap: 40px;
-    transition: top var(--main-transition), opacity var(--main-transition), visibility var(--main-transition); 
-}
+
 header nav ul > li:last-child:hover .megamenu {
     top: calc(100% + 1px);
     opacity: 1;
@@ -439,11 +424,27 @@ header nav ul > li:last-child:hover .megamenu {
     position: relative;
 }
 .landing .image img {
-    width: 460px;
+    margin-bottom: 100px;
+    width: 270px;
     max-width: 100%;
-    animation: an-img 5s linear infinite ;
+    -webkit-animation: spin 1s linear infinite;
+    -moz-animation: spin 1s linear infinite;
+    animation: spin 10s linear infinite;
     position: relative; 
 }
+
+@-webkit-keyframes spin{
+    100%{-webkit-transform: rotate(360deg);}
+}
+
+@-moz-keyframes spin{
+    100%{-webkit-transform:rotate(360deg) ;}
+}
+
+@keyframes spin{
+    100%{-webkit-transform: rotate(360deg);}
+}
+
 @keyframes an-img {
     0%, 100% {
         top: 0;
@@ -472,9 +473,10 @@ header nav ul > li:last-child:hover .megamenu {
     margin: 0;
     font-weight: bolder;
     letter-spacing: -3px;
+    color: #6332DD;
 }
 .landing .text-content p {
-    color: #666;
+    color: lightgray;
     line-height: 1.7;
     font-size: 22px;
     margin: 5px 0 0;
@@ -892,7 +894,7 @@ button {
 }
 .teamMembers .box::after {
     content: "";
-    background-color: var(--section-background);
+    background-color: #ececec;
     position: absolute;
     width: 260px;
     height: 410px;
@@ -1632,7 +1634,7 @@ footer .container {
     padding-bottom: 50px;
 }
 footer .container .box a.tidal-logo {
-    font-size: 40px;
+    font-size: 20px;
     margin-bottom: 20px;
     color: white;
     display: flex;
@@ -1760,6 +1762,7 @@ footer .last-info p span, a {
     font-weight: bold;
 }
 /* End Footer */
+
 
 
 /* article Slider*/

@@ -6,6 +6,7 @@
     <title>Tidal Website</title>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/all.min.css">
     <link rel="stylesheet" href="js/gallery.js">
     <link rel="stylesheet" href="main.css">
@@ -22,56 +23,43 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <!-- Start header -->
-    <header id="header">
-        <div class="container">
-            <a href="#" class="logo"><img src="imgs/logo.png" alt=""> Tidal Website</a>
-            <nav>
-                <ul>
-                    <li><a href="#articles" class="nav-a">Articles</a></li>
-                    <li><a href="#gallery" class="nav-a">Gallery</a></li>
-                    <li><a href="#features" class="nav-a">Features</a></li>
-                    <li><a href="#" class="nav-a nav-otherL">Other Links</a>
-                        <!-- Start Megamenu -->
-                        <div class="megamenu">
-                            <div class="image">
-                                <img src="imgs/megamenu.png" alt="">
-                            </div>
-                            <div class="links">
-                                <ul class="ul-1">
-                                    <li><a href="#game"><i class="fa-solid fa-comments fa-lg"></i>Game</a></li>
-                                    <li><a href="#teamMembers"><i class="fa-solid fa-users fa-lg"></i>Team Members</a></li>
-                                </ul>
-                            </div>
-                            <div class="links">
-                                <ul class="ul-2">
-                                    <li><a href="#howItWorks"><i class="fa-solid fa-clipboard fa-lg"></i>How It Works</a></li>
-                                    <li><a href="#topVideos"><i class="fa-solid fa-circle-play"></i>Top Videos</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- End Megamenu -->
-                    </li>
-
-                </ul>
-            </nav>
-        </div>
-    </header>
-    <!-- End header -->
-    <!-- Start Landing -->
-    <div class="landing">
-        <div class="container">
-            <div class="text-content">
-                <h1>Welcome, To Tidal Website</h1>
-                <p>Tidal is a multifunctional website designed to provide the latest information about artificial intelligence (AI). Through Tidal, visitors can access up-to-date news, AI technology updates, and informative resources related to artificial intelligence. Additionally, the website offers engaging game features to provide an interactive experience for users. With its unique combination of AI news and entertaining games, Tidal aims to be a captivating source of information and entertainment for technology and artificial intelligence enthusiasts.</p>
-            </div>
-            <div class="image">
-                <img src="imgs/avatar.png" alt="Sorry, No Image Found">
-            </div>
-        </div>
-        <a href="#articles" class="go-down"><i class="fa-solid fa-angles-down fa-xl"></i></a>
-    </div>
-    <!-- End Landing -->
+   <!--navbar-->
+   <header>
+    <nav class="nav">
+     <div class="container">
+       <div class="logo">
+           <a href="#" class="logo"><img src="imgs/logo.png" width="50px" height="50px" alt=""> Tidal Website</a>
+       </div>
+       <div id="mainListDiv" class="main_list">
+         <ul class="navlinks">
+           <li><a href="#articles">Articles</a></li>
+           <li><a href="#gallery">Gallery</a></li>
+           <li><a href="#howItWorks">Features</a></li>
+         </ul>
+       </div>
+       <span class="navTrigger">
+         <i></i>
+         <i></i>
+         <i></i>
+       </span>
+     </div>
+   </nav>
+ </header>
+     <!-- Start Landing -->
+     <div class="landing">
+         <div class="container">
+             <div class="text-content">
+                 <h1>Welcome, To Tidal Website</h1>
+                 <p>Your go-to site for the latest AI news, tech updates, and resources. <br> Dive into interactive games for a unique blend of information <br>
+                     and entertainment.</p>
+             </div>
+             <div class="image">
+                 <img src="imgs/avatar.png" alt="Sorry, No Image Found">
+             </div>
+         </div>
+         <a href="#articles" class="go-down"><i class="fa-solid fa-angles-down fa-xl"></i></a>
+     </div>
+     <!-- End Landing -->
 
 <!-- Start Article Slider-->
     <section class="game-section">
