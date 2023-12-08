@@ -679,9 +679,7 @@ header nav ul > li:last-child:hover .megamenu {
     left: 15px;
     width: calc(100% - 30px);
 }
-.features .box .text-content .buttons a {
 
-}
 .features .box .text-content .buttons a {           
     font-size: 22px;
     font-weight: bold;
